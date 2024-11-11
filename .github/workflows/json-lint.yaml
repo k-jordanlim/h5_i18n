@@ -1,0 +1,30 @@
+name: JSON Lint
+
+on:
+  pull_request:
+    paths:
+      - '**/*.json'  # Only run for JSON files
+  push:
+    branches:
+      - main  # Or any other branch you want to track
+
+jobs:
+  lint-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify your node version here
+
+      - name: Install dependencies
+        run: |
+          npm install jsonlint --save-dev
+
+      - name: Lint JSON files
+        run: |
+          find . -name '*.json' -exec jsonlint --check {} \;
